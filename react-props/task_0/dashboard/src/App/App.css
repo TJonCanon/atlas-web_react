@@ -1,0 +1,19 @@
+
+.App {
+  text-align: center;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.App-footer {
+  margin-top: 5%;
+  border-top: 1.5px solid rgb(224,53,75);
+  font-style: italic;
+  text-align: center;
+}
+
+form input {
+  margin: 0.5rem;
+}
