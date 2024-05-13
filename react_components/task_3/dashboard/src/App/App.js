@@ -7,7 +7,7 @@ import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 import CourseList from '../CourseList/CourseList';
 import BodySection from './BodySection';
-
+import BodySectionWithMarginBottom from './BodySectionWithMarginBottom';
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -50,7 +50,18 @@ class App extends React.Component {
           <Header />
           <Notifications listNotifications={listNotifications} displayDrawer={isLoggedIn} />
           <div className="App-body">
-            {isLoggedIn ? <CourseList listCourses={listCourses} /> : <Login />}
+            {isLoggedIn ? (
+              <BodySectionWithMarginBottom title="Course list">
+                <CourseList listCourses={listCourses} />
+              </BodySectionWithMarginBottom>
+            ) : (
+              <BodySectionWithMarginBottom title="Log in to continue">
+                <Login />
+              </BodySectionWithMarginBottom>
+            )}
+            <BodySection title="News from the School">
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus.</p>
+            </BodySection>
           </div>
           <Footer />
         </div>
