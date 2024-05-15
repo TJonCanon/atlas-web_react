@@ -52,4 +52,33 @@ describe('Notifications', () => {
     expect(mockConsole).toHaveBeenCalledWith(`Notification ${id} has been marked as read`);
     jest.restoreAllMocks();
   });
+  
+  it('does not rerender when updating props with the same list', () => {
+    const listNotifications = [
+      { id: 1, type: 'default', value: 'Notification 1' },
+      { id: 2, type: 'urgent', value: 'Notification 2' },
+    ];
+    const wrapper = shallow(<Notifications displayDrawer listNotifications={listNotifications} />);
+    const shouldComponentUpdate = jest.spyOn(Notifications.prototype, 'shouldComponentUpdate');
+    wrapper.setProps({ listNotifications: listNotifications });
+    expect(shouldComponentUpdate).toHaveBeenCalled();
+    expect(shouldComponentUpdate).toHaveLastReturnedWith(false);
+  });
+
+  it('rerenders when updating props with a longer list', () => {
+    const listNotifications = [
+      { id: 1, type: 'default', value: 'Notification 1' },
+      { id: 2, type: 'urgent', value: 'Notification 2' },
+    ];
+    const longerListNotifications = [
+      { id: 1, type: 'default', value: 'Notification 1' },
+      { id: 2, type: 'urgent', value: 'Notification 2' },
+      { id: 3, type: 'urgent', value: 'Notification 3' },
+    ];
+    const wrapper = shallow(<Notifications displayDrawer listNotifications={listNotifications} />);
+    const shouldComponentUpdate = jest.spyOn(Notifications.prototype, 'shouldComponentUpdate');
+    wrapper.setProps({ listNotifications: longerListNotifications });
+    expect(shouldComponentUpdate).toHaveBeenCalled();
+    expect(shouldComponentUpdate).toHaveLastReturnedWith(true);
+  });
 });

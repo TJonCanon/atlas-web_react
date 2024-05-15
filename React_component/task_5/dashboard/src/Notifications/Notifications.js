@@ -1,13 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import NotificationItem from './NotificationItem';
-import NotificationItemShape from './NotificationItemShape';
-import './Notifications.css';
-
 class Notifications extends React.Component {
   constructor(props) {
     super(props);
     this.markAsRead = this.markAsRead.bind(this);
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return nextProps.listNotifications.length > this.props.listNotifications.length;
   }
 
   markAsRead(id) {
@@ -22,8 +20,8 @@ class Notifications extends React.Component {
         <div className="menuItem">Your notifications</div>
         {displayDrawer && (
           <div className="Notifications">
-          <p>Here is the list of notifications</p>
-          <ul>
+            <p>Here is the list of notifications</p>
+            <ul>
               {listNotifications.length === 0 ? (
                 <NotificationItem value="No new notification for now" />
               ) : (
@@ -39,33 +37,21 @@ class Notifications extends React.Component {
                 ))
               )}
             </ul>
-          <button
-            style={{
-              position: 'absolute',
-              top: '10px',
-              right: '10px',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-            }}
-            aria-label="Close"
-          >
-          </button>
+            <button
+              style={{
+                position: 'absolute',
+                top: '10px',
+                right: '10px',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+              }}
+              aria-label="Close"
+            >
+            </button>
           </div>
-      )}
-    </>
-  );
-};
+        )}
+      </>
+    );
+  }
 }
-
-Notifications.propTypes = {
-  displayDrawer: PropTypes.bool,
-  listNotifications: PropTypes.arrayOf(NotificationItemShape),
-};
-
-Notifications.defaultProps = {
-  displayDrawer: false,
-  listNotifications: [],
-};
-
-export default Notifications;
