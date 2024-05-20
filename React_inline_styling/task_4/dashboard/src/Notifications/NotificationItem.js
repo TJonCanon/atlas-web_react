@@ -1,59 +1,55 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import NotificationItemShape from './NotificationItemShape';
 import { StyleSheet, css } from 'aphrodite';
 
 const styles = StyleSheet.create({
   default: {
     color: 'blue',
-    '@media (max-width: 900px)': {
-      width: '100%',
-      borderBottom: '1px solid black',
-      fontSize: '20px',
-      padding: '10px 8px',
-    },
   },
-
   urgent: {
     color: 'red',
-    '@media (max-width: 900px)': {
-      width: '100%',
+  },
+  listItem: {
+    '@media screen and (max-width: 900px)': {
       borderBottom: '1px solid black',
-      fontSize: '20px',
       padding: '10px 8px',
+      listStyleType: 'none',
     },
   },
 });
 
-class NotificationItem extends React.PureComponent {
-  render() {
-    const { type, html, value, markAsRead, id } = this.props;
+const NotificationItem = React.memo(({ type, html, value, markAsRead, id }) => {
+  const className = type === 'default' ? styles.default : styles.urgent;
+
+  if (html) {
     return (
       <li
-        className={css(type === 'urgent' ? styles.urgent : styles.default)}
+        className={`${css(styles.listItem)} ${css(className)}`}
         data-notification-type={type}
         dangerouslySetInnerHTML={html}
         onClick={() => markAsRead(id)}
-      >
-        {value}
-      </li>
+      />
     );
   }
-}
+  return (
+    <li
+      className={`${css(styles.listItem)} ${css(className)}`}
+      data-notification-type={type}
+      onClick={() => markAsRead(id)}
+    >
+      {value}
+    </li>
+  );
+});
 
 NotificationItem.propTypes = {
-  html: PropTypes.shape({
-    __html: PropTypes.string,
-  }),
-  type: PropTypes.string.isRequired,
-  value: PropTypes.string,
-  markAsRead: PropTypes.func,
-  id: PropTypes.number,
+  ...NotificationItemShape.propTypes,
+  markAsRead: PropTypes.func.isRequired,
 };
 
 NotificationItem.defaultProps = {
   type: 'default',
-  markAsRead: () => {},
-  id: 0,
 };
 
 export default NotificationItem;
